@@ -1,41 +1,41 @@
-from flask import Flask, request, render_template, redirect, url_for
-import boto3
-import pandas as pd
+
+from flask import Flask, request, redirect, url_for, render_template
 import os
+from werkzeug.utils import secure_filename
+import boto3
+
+from api_scripts import read_and_clean_data, api_request
+# from api_scripts import process_file_from_s3
 
 app = Flask(__name__)
-
-# AWS S3 setup
-s3_client = boto3.client('s3')
-BUCKET_NAME = 'your-bucket-name'  # Update with your bucket name
+app.secret_key = 'your_secret_key_here'
 
 @app.route('/', methods=['GET', 'POST'])
-def upload_file():
+def upload():
     if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
         file = request.files['file']
+        file_key = request.form['file_key']
         column_name = request.form['column_name']
-        if file and column_name:
-            # Save the file to S3
-            filename = file.filename
-            file.save(filename)
-            s3_client.upload_file(filename, BUCKET_NAME, filename)
-            os.remove(filename)  # Remove the file after upload
+        if file and file_key and column_name:
+            filename = secure_filename(file.filename)
+            local_file_path = os.path.join('/tmp', filename)
+            file.save(local_file_path)
+
+            # Upload to S3
+            bucket_name = os.getenv('BUCKET_NAME', 'default-bucket-name')
+            s3_client = boto3.client('s3')
+            s3_client.upload_file(local_file_path, bucket_name, file_key)
+
+            processed_data = read_and_clean_data(local_file_path, column_name)
+            api_request(processed_data)
+
+            os.remove(local_file_path)
 
             # Process the file
-            file_path = f"s3://{BUCKET_NAME}/{filename}"
-            process_file(file_path, column_name)
-            return "File has been uploaded and processed"
-    return render_template('upload.html')
+            # process_file_from_s3(bucket_name, file_key, column_name)
 
-def process_file(file_path, column_name):
-    # Function to download, clean data and initiate API requests
-    df = pd.read_csv(file_path)
-    df = df.dropna(subset=[column_name])
-    df[column_name] = df[column_name].str.strip()
-    # Here you would add the function to pass data to your API
-    print(df[column_name])
+            return redirect(url_for('upload'))
+    return render_template('upload.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

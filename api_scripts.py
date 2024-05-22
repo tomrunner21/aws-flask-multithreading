@@ -4,9 +4,13 @@ import pandas as pd
 import time
 import boto3
 from botocore.exceptions import NoCredentialsError
+from dotenv import load_dotenv
+import os
 
-# Your OpenAI API Key
-API_KEY = 'your-openai-api-key'
+load_dotenv()
+
+bucket_name = os.environ.get('BUCKET_NAME', 'default-bucket-name')
+API_KEY = os.environ.get('API_KEY', 'api-key')
 
 # GPT-4 API endpoint
 API_URL = "https://api.openai.com/v1/completions"
@@ -39,7 +43,7 @@ def api_request(inputs):
     for input_text in inputs:
         data = {
             "model": "text-davinci-004",
-            "prompt": f"Translate the following English text to French: '{input_text}'",
+            "prompt": f"Generate a summary of the history of this topic: '{input_text}'",
             "max_tokens": 60
         }
         response = session.post(API_URL, headers=headers, json=data)
@@ -67,7 +71,7 @@ def main(bucket_name, file_key, column_name):
         print(f"Completed in {end_time - start_time} seconds.")
 
 if __name__ == "__main__":
-    bucket_name = 'your-bucket-name'  # AWS S3 bucket name
+      # AWS S3 bucket name
     file_key = 'your-file-key.csv'  # S3 object key
     column_name = 'your_column_name'  # Column to process
     main(bucket_name, file_key, column_name)

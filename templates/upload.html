@@ -6,64 +6,31 @@
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
 </head>
 <body>
-    <!-- <h1>Upload CSV File</h1>
-    <form method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=text name=column_name placeholder='Enter Column Name'>
-        <input type=submit value=Upload>
-    </form>
 
-    <form class="form-container" enctype='multipart/form-data'>
-        <div class="upload-files-container">
-            <div class="drag-file-area">
-                <span class="material-icons-outlined upload-icon"> file_upload </span>
-                <h3 class="dynamic-message"> Drag & drop any file here </h3>
-                <label class="label"> or <span class="browse-files"> <input type="file" class="default-file-input"/> <span class="browse-files-text">browse file</span> <span>from device</span> </span> </label>
+      <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file_key">File Key <span>(Specify the name for the uploaded file)</span></label>
+                <input type="text" name="file_key" id="file_key" class="form-control" required />
             </div>
-            <span class="cannot-upload-message"> <span class="material-icons-outlined">error</span> Please select a file first <span class="material-icons-outlined cancel-alert-button">cancel</span> </span>
-            <div class="file-block">
-                <div class="file-info"> <span class="material-icons-outlined file-icon">description</span> <span class="file-name"> </span> | <span class="file-size">  </span> </div>
-                <span class="material-icons remove-file-icon">delete</span>
-                <div class="progress-bar"> </div>
+            <div class="form-group">
+                <label for="column_name">Column Name <span>(Specify the column to process)</span></label>
+                <input type="text" name="column_name" id="column_name" class="form-control" required />
             </div>
-            <button type="button" class="upload-button"> Upload </button>
-        </div>
-    </form> -->
-    <form action method="post">
-  
-        <h1><strong>File upload</strong> with style and pure CSS</h1>
-        
-        <div class="form-group">
-          <label for="title">Title <span>Use title case to get a better result</span></label>
-          <input type="text" name="title" id="title" class="form-controll"/>
-        </div>
-        <div class="form-group">
-          <label for="caption">Caption <span>This caption should be descriptiv</span></label>
-          <input type="text" name="caption" id="caption" class="form-controll"/>
-        </div>
-        
-        <div class="form-group file-area">
-              <label for="images">Images <span>Your images should be at least 400x300 wide</span></label>
-          <input type="file" name="images" id="images" required="required" multiple="multiple"/>
-          <div class="file-dummy">
-            <div class="success">Great, your files are selected. Keep on.</div>
-            <div class="default">Please select some files</div>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <button type="submit">Upload images</button>
-        </div>
-        
-      </form>
-      
-      
-      
-      
-      
-      
+            <div class="form-group file-area">
+                <label for="file">CSV File <span>Your CSV file should be formatted properly</span></label>
+                <input type="file" name="file" id="file" required="required" class="form-control"/>
+                <div class="file-dummy">
+                    <div class="success">Great, your file is selected. Keep on.</div>
+                    <div class="default">Please select a CSV file to upload.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Upload data to S3</button>
+            </div>
+        </form>
+    
       <link href='https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700' rel='stylesheet' type='text/css'>
       
-      <a href="http://scribblerockerz.com/drag-n-drop-file-input-without-javascript/" class="back-to-article" target="_blank">back to Article</a>
+      <!-- <a href="http://scribblerockerz.com/drag-n-drop-file-input-without-javascript/" class="back-to-article" target="_blank">back to Article</a> -->
 </body>
 </html>

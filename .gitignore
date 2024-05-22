@@ -1,3 +1,7 @@
 # ignore virtual environment for packages:
 
 packages/
+
+# ignore env values for backend:
+
+.env
